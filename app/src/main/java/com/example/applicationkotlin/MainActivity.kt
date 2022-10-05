@@ -1,11 +1,17 @@
 package com.example.applicationkotlin
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import org.w3c.dom.Text
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+
+
+enum class Signs(val sign:String){
+    PLUS("+"),
+    MINUS("-"),
+    MULTIPLY("*"),
+    DIVIDE("/"),
+}
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,31 +23,45 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val text = findViewById<TextView> (R.id.textView2)
-        val editTextNumber = findViewById<EditText>(R.id.editTextNumber);
-        var value = 0;
+        val spinner = findViewById<Spinner>(R.id.spinner2);
 
-        findViewById<Button>(R.id.button3).setOnClickListener {
-            val chislo = editTextNumber.text.toString();
 
-            if(chislo != ""){
-                value+= chislo.toInt();
-                setText(value, text)
-            }
+        val list_potions = ArrayList<String>();
 
+        Signs.values().forEach {
+            list_potions.add(it.sign)
         }
 
-        findViewById<Button>(R.id.button4).setOnClickListener {
-            val chislo = editTextNumber.text.toString();
-            if(chislo != ""){
-                val chval = chislo.toInt();
-                if(value-chval  >= 0){
-                    value-= chval;
-                    setText(value, text)
+        val adapter =  ArrayAdapter(this, android.R.layout.simple_spinner_item,list_potions);
+
+        spinner.adapter = adapter;
+
+
+        val value = findViewById<EditText>(R.id.editTextNumber3);
+        val value1 = findViewById<EditText>(R.id.editTextNumber4);
+
+        var sum = 0;
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // ничего не выбрали
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                println(spinner.selectedItem);
+                when(spinner.selectedItem){
+                    Signs.PLUS.sign -> println(1)
+                    Signs.MINUS.sign -> println(2)
+                    Signs.DIVIDE.sign -> println(3)
+                    Signs.MULTIPLY.sign -> println(4)
                 }
             }
         }
-
 
 
     }
